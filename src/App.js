@@ -20,6 +20,13 @@ class App extends React.Component {
     blogService.getAll().then(blogs =>
       this.setState({ blogs })
     )
+
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      this.setState({ user })
+      blogService.setToken(user.token)
+    }
   }
 
   addBlog = (event) => {
@@ -58,11 +65,28 @@ class App extends React.Component {
         password: this.state.password
       })
 
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       blogService.setToken(user.token)
       this.setState({ username: '', password: '', user })
     } catch (exception) {
       this.setState({
         error: 'either username or password is wrong'
+      })
+      setTimeout(() => {
+        this.setState({ error: null })
+      }, 5000)
+    }
+  }
+
+  logout = async (event) => {
+    event.preventDefault()
+    try {
+
+      window.localStorage.removeItem('loggedBlogappUser')
+      this.setState({ username: '', password: '', user: null })
+    } catch (exception) {
+      this.setState({
+        error: 'something went wrong'
       })
       setTimeout(() => {
         this.setState({ error: null })
@@ -98,6 +122,16 @@ class App extends React.Component {
       </div>
     )
 
+    const logoutForm = () => (
+
+      <div>
+        <form onSubmit={this.logout}>
+          <button type="submit">Log out</button>
+        </form>
+      </div>
+    )
+
+
     const blogForm = () => (
       <div>
         <h2>Write a new blog</h2>
@@ -120,7 +154,7 @@ class App extends React.Component {
         {this.state.user === null ?
           loginForm() :
           <div>
-            <p>{this.state.user.name} logged in</p>
+            <p>{this.state.user.name} logged in</p>{logoutForm()}
             {blogForm()}
           </div>
         }
