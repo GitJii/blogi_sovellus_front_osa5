@@ -27,7 +27,7 @@ class App extends React.Component {
     const blogObject = {
       title: this.state.newBlog,
       author: this.state.user.name,
-      url: 'tässä on url'
+      url: 'URL tulee tänne'
     }
 
     blogService
