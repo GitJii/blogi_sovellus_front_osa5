@@ -1,0 +1,24 @@
+h1 {
+    color: blue;
+    font-style: oblique
+}
+
+.error {
+    color:blanchedalmond;
+    background: red;
+    font-size: 20px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.success {
+    color:blue;
+    background: green;
+    font-size: 20px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
