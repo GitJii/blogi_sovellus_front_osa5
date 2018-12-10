@@ -156,14 +156,14 @@ class App extends React.Component {
           <div>
             <p>{this.state.user.name} logged in</p>{logoutForm()}
             {blogForm()}
+
+            <h2>Blogs</h2>
+
+            {this.state.blogs.map(blog =>
+              <Blog key={blog._id} blog={blog} />
+            )}
           </div>
         }
-
-        <h2>Blogs</h2>
-
-        {this.state.blogs.map(blog =>
-          <Blog key={blog._id} blog={blog} />
-        )}
       </div>
     )
   }
