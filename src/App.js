@@ -2,8 +2,11 @@ import React from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import Notification from './components/Notification'
+import ErrorNotification from './components/ErrorNotification'
 import LoginForm from './components/LoginForm'
+import SuccessNotification from './components/SuccessNotification'
+import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
 
 class App extends React.Component {
   constructor(props) {
@@ -14,6 +17,7 @@ class App extends React.Component {
       author: '',
       url: '',
       password: '',
+      visible: '',
       user: null,
       success: null,
       error: null
@@ -54,9 +58,9 @@ class App extends React.Component {
         })
 
       this.setState({
-        success: 'a new blog ' +  
-         blogObject.title + '" by ' +
-         blogObject.author + ' has been added'
+        success: 'a new blog "' +
+          blogObject.title + '" by ' +
+          blogObject.author + ' has been added'
       })
       setTimeout(() => {
         this.setState({ success: null })
@@ -120,29 +124,20 @@ class App extends React.Component {
 
   render() {
     const loginForm = () => {
-      const hideWhenVisible = { display: this.state.loginVisible ? 'none' : '' }
-      const showWhenVisible = { display: this.state.loginVisible ? '' : 'none' }
-
-      return (
-        <div>
-          <div style={hideWhenVisible}>
-            <button onClick={e => this.setState({ loginVisible: true })}>log in</button>
-          </div>
-          <div style={showWhenVisible}>
-            <LoginForm
-              username={this.state.username}
-              password={this.state.password}
-              handleChange={this.handleLoginFieldChange}
-              handleSubmit={this.login}
-            />
-            <button onClick={e => this.setState({ loginVisible: false })}>cancel</button>
-          </div>
-        </div>
+     return (
+        <Togglable buttonLabel="login">
+          <LoginForm
+            visible={this.state.visible}
+            username={this.state.username}
+            password={this.state.password}
+            handleChange={this.handleLoginFieldChange}
+            handleSubmit={this.login}
+          />
+        </Togglable>
       )
     }
 
     const logoutForm = () => (
-
       <div>
         <form onSubmit={this.logout}>
           <button type="submit">Log out</button>
@@ -151,63 +146,42 @@ class App extends React.Component {
     )
 
 
-    const blogForm = () => (
-      <div>
-        <h2>Write a new blog</h2>
-
-        <form onSubmit={this.addBlog}>
-          <div>
-            title
-            <input
-              type="text"
-              name="title"
-              value={this.state.title}
-              onChange={this.handleBlogChange}
-            />
-          </div>
-          <div>
-            author
-            <input
-              type="text"
-              name="author"
-              value={this.state.author}
-              onChange={this.handleBlogChange}
-            />
-          </div>
-          <div>
-            url
-            <input
-              type="text"
-              name="url"
-              value={this.state.url}
-              onChange={this.handleBlogChange}
-            />
-          </div>
-          <button type="submit">send</button>
-        </form>
-      </div>
-    )
+    const blogForm = () => {
+      return (
+        <Togglable buttonLabel="new blog">
+          <BlogForm
+            visible={this.state.visible}
+            title={this.state.title}
+            author={this.state.author}
+            url={this.state.url}
+            handleChange={this.handleBlogChange}
+            onSubmit={this.addBlog}
+          />
+        </Togglable>
+      )
+    }
 
     return (
       <div>
         <h1>Blogs</h1>
-        <Notification message={this.state.error} />
-        <Notification message={this.state.success}/>
+        <ErrorNotification message={this.state.error} />
+        <SuccessNotification message={this.state.success} />
 
-        {this.state.user === null ?
-          loginForm() :
-          <div>
-            <p>{this.state.user.name} logged in</p>{logoutForm()}
-            {blogForm()}
+        {
+          this.state.user === null ?
+            loginForm() :
+            <div>
+              <p>{this.state.user.name} logged in</p>{logoutForm()}
+              {blogForm()}
 
-            <h2>Blogs</h2>
+              <h2>Blogs</h2>
 
-            {this.state.blogs.map(blog =>
-              <Blog key={blog._id} blog={blog} />
-            )}
-          </div>
+              {this.state.blogs.map(blog =>
+                <Blog key={blog._id} blog={blog} />
+              )}
+            </div>
         }
-      </div>
+      </div >
     )
   }
 }
