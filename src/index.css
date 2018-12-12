@@ -22,3 +22,8 @@ h1 {
     padding: 10px;
     margin-bottom: 10px;
 }
+
+.url {
+    color: royalblue;
+    text-decoration: underline
+}

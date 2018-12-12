@@ -18,6 +18,7 @@ class App extends React.Component {
       url: '',
       password: '',
       visible: '',
+      fullBlog: '',
       user: null,
       success: null,
       error: null
@@ -45,6 +46,8 @@ class App extends React.Component {
         author: this.state.author,
         url: this.state.url
       }
+
+      this.blogForm.toggleVisibility()
 
       blogService
         .create(blogObject)
@@ -124,7 +127,7 @@ class App extends React.Component {
 
   render() {
     const loginForm = () => {
-     return (
+      return (
         <Togglable buttonLabel="login">
           <LoginForm
             visible={this.state.visible}
@@ -148,7 +151,7 @@ class App extends React.Component {
 
     const blogForm = () => {
       return (
-        <Togglable buttonLabel="new blog">
+        <Togglable buttonLabel="new blog" ref={component => this.blogForm = component}>
           <BlogForm
             visible={this.state.visible}
             title={this.state.title}
@@ -177,7 +180,11 @@ class App extends React.Component {
               <h2>Blogs</h2>
 
               {this.state.blogs.map(blog =>
-                <Blog key={blog._id} blog={blog} />
+                <div >
+                  
+                  <Blog key={blog.id} blog={blog} user={blog.user.name} buttonLabel="like"/>
+
+                </div>
               )}
             </div>
         }
