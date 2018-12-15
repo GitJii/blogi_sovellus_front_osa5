@@ -88,6 +88,19 @@ class App extends React.Component {
     this.setState({ [event.target.name]: event.target.value })
   }
 
+  handleBlogLike = (blog) => {
+    const changedBlog = { ...blog, likes: blog.likes + 1 }
+
+    blogService
+      .update(blog.id, changedBlog)
+      .then(() => {
+        this.setState({
+          blogs: this.state.blogs.map(updBlog => blog.id !== updBlog.id ? blog : changedBlog)
+        })
+      })
+  }
+
+
   login = async (event) => {
     event.preventDefault()
     try {
@@ -181,8 +194,12 @@ class App extends React.Component {
 
               {this.state.blogs.map(blog =>
                 <div >
-                  
-                  <Blog key={blog.id} blog={blog} user={blog.user.name} buttonLabel="like"/>
+
+                  <Blog key={blog.id}
+                    blog={blog}
+                    user={blog.user.name}
+                    onLike={() => this.handleBlogLike(blog)}
+                    buttonLabel="like" />
 
                 </div>
               )}

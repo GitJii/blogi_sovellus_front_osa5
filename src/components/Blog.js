@@ -6,19 +6,12 @@ class Blog extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      blog: props.blog,
-      user: props.user,
-      fullBlog: false,
-      likes: 0
+      fullBlog: false
     }
   }
 
   toggleFullBlog = () => {
     this.setState({ fullBlog: !this.state.fullBlog })
-  }
-
-  likeButton = () => {
-    this.setState({ likes: this.state.likes + 1 })
   }
 
   render() {
@@ -31,18 +24,21 @@ class Blog extends React.Component {
 
     const showWhenVisible = { display: this.state.fullBlog ? '' : 'none' }
 
+    const { user, title, author, url, likes } = this.props.blog
+    const { onLike } = this.props.onLike
+
     return (
       <div >
         <div>
           <div style={blogStyle}>
-            <div onClick={this.toggleFullBlog}>{this.state.blog.title + ' ' + this.state.blog.author}</div>
+            <div onClick={this.toggleFullBlog}>{title + ' ' + author}</div>
             <div style={showWhenVisible}>
-              <Url address={this.state.blog.url} />
-              {this.state.blog.likes + ' likes '}
+              <Url address={url} />
+              {likes + ' likes '}
 
-              <button onClick={this.likeButton}>{this.props.buttonLabel}</button>
+              <button onClick={onLike}>{this.props.buttonLabel}</button>
               <div></div>
-              {'added by ' + this.state.user}
+              {'added by ' + user.name}
             </div>
           </div>
         </div>
