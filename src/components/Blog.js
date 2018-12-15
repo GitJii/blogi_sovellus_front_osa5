@@ -22,10 +22,15 @@ class Blog extends React.Component {
       marginBottom: 2
     }
 
-    const showWhenVisible = { display: this.state.fullBlog ? '' : 'none' }
 
     const { user, title, author, url, likes } = this.props.blog
     const { onLike } = this.props
+    const { onDelete } = this.props
+    const { currentUser } = this.props
+
+    const showWhenVisible = { display: this.state.fullBlog ? '' : 'none' }
+    const showIfRightUser = { display: (user.name === currentUser.name || user.name === undefined) ? 'none' : '' }
+
 
     return (
       <div >
@@ -36,9 +41,13 @@ class Blog extends React.Component {
               <Url address={url} />
               {likes + ' likes '}
 
-              <button onClick={onLike}>{this.props.buttonLabel}</button>
+              <button onClick={onLike}>{"like"}</button>
               <div></div>
               {'added by ' + user.name}
+              <div></div>
+              <div style={showIfRightUser}>
+                <button onClick={onDelete}>{"delete"}</button>
+              </div>
             </div>
           </div>
         </div>

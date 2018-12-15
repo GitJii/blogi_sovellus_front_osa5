@@ -27,3 +27,12 @@ h1 {
     color: royalblue;
     text-decoration: underline
 }
+
+.authorAndTitle {
+    color: yellow;
+    font-size: 20px;
+}
+
+.likes {
+    color:green
+}

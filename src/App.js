@@ -26,7 +26,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
@@ -103,6 +102,30 @@ class App extends React.Component {
         })
       })
   }
+
+  handleBlogDelete = (blog) => {
+
+    const deletedBlog = this.state.blogs.find(dBlog =>
+      dBlog.id === blog.id
+    )
+
+    if (window.confirm('Do you really want to delete blog ' +
+      deletedBlog.name + ' made by ' + deletedBlog.author)
+    )
+      blogService
+        .remove(blog.id)
+        .then(() => {
+          const blogs = this.state.blogs.filter(b => b.id !== blog.id)
+          this.setState({
+            success: `${deletedBlog.name}  was deleted successfully`,
+            blogs: blogs
+          })
+          setTimeout(() => {
+            this.setState({ error: null })
+          }, 5000)
+        })
+  }
+
 
 
   login = async (event) => {
@@ -200,10 +223,13 @@ class App extends React.Component {
                 <div >
 
                   <Blog key={blog.id}
+                    currentUser={this.state.user}
                     blog={blog}
                     user={blog.user.name}
                     onLike={() => this.handleBlogLike(blog)}
-                    buttonLabel="like" />
+                    buttonLabel="like"
+                    onDelete={() => this.handleBlogDelete(blog)}
+                  />
 
                 </div>
               )}
