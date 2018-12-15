@@ -9,42 +9,43 @@ describe.only('<SimpleBlog />', () => {
             title: 'tere',
             url: 'piste.com',
             likes: 0
-    }
+        }
 
         const blogComponent = shallow(<SimpleBlog simpleBlog={simpleBlog} />)
         console.log(blogComponent.debug())
 
-        const authorDiv = blogComponent.find('.authorAndTitle')    
+        const authorDiv = blogComponent.find('.authorAndTitle')
         const titleDiv = blogComponent.find('.authorAndTitle')
         const likesDiv = blogComponent.find('.likes')
-        
+
         expect(authorDiv.text()).toContain(simpleBlog.author)
         expect(titleDiv.text()).toContain(simpleBlog.title)
         expect(likesDiv.text()).toContain(simpleBlog.likes)
-        
+
     })
 
-    it('clicking the button calls event handler once', () => {
+    it('clicking the button calls event handler twice', () => {
         const simpleBlog = {
             author: 'Jaakko',
             title: 'tere',
             url: 'piste.com',
             likes: 0
-    }
-      
+        }
+
         const mockHandler = jest.fn()
-      
+
         const blogComponent = shallow(
-          <SimpleBlog
-            simpleBlog={simpleBlog}
-            onClick={mockHandler}
-          />
+            <SimpleBlog
+                simpleBlog={simpleBlog}
+                onClick={mockHandler}
+            />
         )
-      
+
         const button = blogComponent.find('button')
         button.simulate('click')
         button.simulate('click')
-        
+
         expect(mockHandler.mock.calls.length).toBe(2)
-      })
+    })
+
 })
