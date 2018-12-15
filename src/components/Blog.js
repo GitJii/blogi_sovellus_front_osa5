@@ -25,7 +25,7 @@ class Blog extends React.Component {
     const showWhenVisible = { display: this.state.fullBlog ? '' : 'none' }
 
     const { user, title, author, url, likes } = this.props.blog
-    const { onLike } = this.props.onLike
+/*Näin ei saa tehdä    const { onLike } = this.props.onLike */
 
     return (
       <div >
@@ -36,7 +36,7 @@ class Blog extends React.Component {
               <Url address={url} />
               {likes + ' likes '}
 
-              <button onClick={onLike}>{this.props.buttonLabel}</button>
+              <button onClick={this.props.onLike}>{this.props.buttonLabel}</button>
               <div></div>
               {'added by ' + user.name}
             </div>

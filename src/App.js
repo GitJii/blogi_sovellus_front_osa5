@@ -95,7 +95,7 @@ class App extends React.Component {
       .update(blog.id, changedBlog)
       .then(() => {
         this.setState({
-          blogs: this.state.blogs.map(updBlog => blog.id !== updBlog.id ? blog : changedBlog)
+          blogs: this.state.blogs.map(u => u.id !== changedBlog.id ? u : changedBlog)
         })
       })
   }
