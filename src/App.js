@@ -26,9 +26,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    blogService.getAll().then(blogs =>
-      this.setState({ blogs })
-    )
 
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
@@ -36,6 +33,13 @@ class App extends React.Component {
       this.setState({ user })
       blogService.setToken(user.token)
     }
+
+    blogService
+      .getAll()
+      .then(blogs => {
+        blogs.sort((a, b) => b.likes - a.likes)
+        this.setState({ blogs })
+      })
   }
 
   addBlog = (event) => {
